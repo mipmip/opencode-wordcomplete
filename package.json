@@ -7,6 +7,28 @@
     "type": "git",
     "url": "https://github.com/mipmip/opencode-wordcomplete"
   },
+  "homepage": "https://github.com/mipmip/opencode-wordcomplete#readme",
+  "bugs": {
+    "url": "https://github.com/mipmip/opencode-wordcomplete/issues"
+  },
+  "keywords": [
+    "opencode",
+    "plugin",
+    "tui",
+    "completion",
+    "autocomplete",
+    "vim"
+  ],
+  "engines": {
+    "bun": ">=1.1.0",
+    "node": ">=20.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "exports": {
@@ -21,15 +43,20 @@
   },
   "scripts": {
     "build": "esbuild src/index.ts src/tui.tsx --bundle --format=esm --platform=node --jsx=automatic --jsx-import-source=@opentui/solid --outdir=dist --external:@opentui/core --external:@opentui/solid --external:@opentui/keymap --external:solid-js --external:@opencode/plugin --external:bun:sqlite",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage --coverage-reporter=lcov && bun scripts/coverage-gate.ts",
+    "check-pack": "bun scripts/check-pack.ts"
   },
   "peerDependencies": {
     "@opentui/core": ">=0.6.6",
     "@opentui/solid": ">=0.6.6",
     "solid-js": ">=1.9.0"
   },
+  "dependencies": {
+    "@opencode/plugin": ">=2.3.0"
+  },
   "devDependencies": {
-    "@opencode/plugin": "latest",
     "@opencode/theme": "latest",
     "@opentui/core": "latest",
     "@opentui/solid": "latest",

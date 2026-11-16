@@ -35,7 +35,7 @@ export default Plugin.define({
     const options = (context.options ?? {}) as Options
     if (options.enabled === false) return
 
-    const acceptKey = normalizeKey(options.acceptKey, "ctrl+y")
+    const acceptKey = normalizeKey(options.acceptKey, "tab")
     const nextKey = normalizeKey(options.nextKey, "ctrl+n")
     const prevKey = normalizeKey(options.prevKey, "ctrl+p")
     const minPrefix = typeof options.minPrefix === "number" ? options.minPrefix : 2
@@ -133,6 +133,7 @@ export default Plugin.define({
     })
 
     context.keymap.layer(() => ({
+      mode: "global",
       priority: 20,
       commands: [
         {

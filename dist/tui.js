@@ -134,7 +134,7 @@ var tui_default = Plugin.define({
   setup(context) {
     const options = context.options ?? {};
     if (options.enabled === false) return;
-    const acceptKey = normalizeKey(options.acceptKey, "ctrl+y");
+    const acceptKey = normalizeKey(options.acceptKey, "tab");
     const nextKey = normalizeKey(options.nextKey, "ctrl+n");
     const prevKey = normalizeKey(options.prevKey, "ctrl+p");
     const minPrefix = typeof options.minPrefix === "number" ? options.minPrefix : 2;
@@ -217,6 +217,7 @@ var tui_default = Plugin.define({
       render: () => /* @__PURE__ */ jsx(Show, { when: label(), children: /* @__PURE__ */ jsx("text", { fg: context.theme.text.muted, children: label() }) })
     });
     context.keymap.layer(() => ({
+      mode: "global",
       priority: 20,
       commands: [
         {

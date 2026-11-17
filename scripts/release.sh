@@ -57,11 +57,18 @@ npm_cmd() {
   fi
 }
 
+current_version=$(sed -nE 's/^  "version": "([^"]+)".*/\1/p' package.json | head -1)
+
 if [ "$dry_run" = true ]; then
   echo "release: dry run for $version"
-  echo "  npm version $version --no-git-tag-version"
+  echo "  package.json is at $current_version"
+  if [ "$current_version" != "$version" ]; then
+    echo "  npm version $version --no-git-tag-version"
+  fi
   echo "  npm publish"
-  echo "  jj commit -m \"release $version\""
+  if [ "$current_version" != "$version" ]; then
+    echo "  jj commit -m \"release $version\""
+  fi
   echo "  jj bookmark set main -r @-"
   echo "  jj git push --bookmark main"
   echo "  git tag $version"
@@ -70,10 +77,14 @@ if [ "$dry_run" = true ]; then
 fi
 
 nix flake check
-npm_cmd version "$version" --no-git-tag-version
+if [ "$current_version" != "$version" ]; then
+  npm_cmd version "$version" --no-git-tag-version
+fi
 npm_cmd publish
 
-jj commit -m "release $version"
+if [ -n "$(git status --porcelain)" ]; then
+  jj commit -m "release $version"
+fi
 jj bookmark set main -r @-
 jj git export
 git tag "$version"
